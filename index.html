@@ -6,7 +6,7 @@
   <title>RajputanaHub</title>
 
   <style>
-    /* 🔥 Book font */
+    /* 🔥 Futura Book */
     @font-face {
       font-family: 'FuturaBook';
       src: url('FuturaCyrillicBook.ttf') format('truetype');
@@ -16,40 +16,45 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'FuturaBook', Arial, sans-serif;
     }
 
     body {
       background: #000;
       color: #fff;
-      font-family: 'FuturaBook', Arial, sans-serif;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
+      overflow: hidden;
     }
 
-    .container {
-      text-align: center;
-      animation: fadeIn 1s ease-out;
+    /* 🔥 TOP LEFT AUTH */
+    .auth {
+      position: absolute;
+      top: 25px;
+      left: 30px;
+      display: flex;
+      gap: 25px;
     }
 
-    /* 🔥 Bigger image */
-    .logo {
-      width: 700px;   /* increase size */
-      max-width: 95%;
-      height: auto;
-      margin-bottom: 30px;
-    }
-
-    /* Subtitle */
-    .subtitle {
-      font-size: 1.8rem;
-      letter-spacing: 2px;
+    .auth a {
+      color: #666;
+      text-decoration: none;
+      font-size: 1.1rem;
       text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.25s ease;
     }
 
-    /* Instagram */
+    .auth a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.4);
+      transform: translateY(-1px);
+    }
+
+    /* 🔥 INSTAGRAM */
     .instagram {
       position: absolute;
       top: 20px;
@@ -59,13 +64,34 @@
     .instagram img {
       width: 35px;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: 0.25s;
     }
 
     .instagram img:hover {
       transform: scale(1.1);
     }
 
+    /* 🔥 CENTER CONTENT */
+    .container {
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .logo {
+      width: 700px;
+      max-width: 95%;
+      height: auto;
+      margin-bottom: 30px;
+    }
+
+    .subtitle {
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ddd;
+    }
+
+    /* 🔥 ANIMATION */
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.9); }
       to { opacity: 1; transform: scale(1); }
@@ -75,14 +101,19 @@
 
 <body>
 
-  <!-- Instagram -->
+  <!-- 🔥 AUTH LINKS -->
+  <div class="auth">
+    <a href="signup.html">Sign Up</a>
+    <a href="login.html">Login</a>
+  </div>
+
+  <!-- 🔥 INSTAGRAM -->
   <a href="https://www.instagram.com/maratha.imperium/" target="_blank" class="instagram">
-    <img src="instagram.webp">
+    <img src="instagram.webp" alt="Instagram">
   </a>
 
-  <!-- Content -->
+  <!-- 🔥 MAIN CONTENT -->
   <div class="container">
-    <!-- ✅ YOUR IMAGE ONLY -->
     <img src="rajputanaimg.png" class="logo" alt="RajputanaHub">
 
     <div class="subtitle">
