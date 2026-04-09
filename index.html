@@ -6,6 +6,12 @@
   <title>Debunking the Biggest Fraud in History</title>
 
   <style>
+    /* Load your uploaded font */
+    @font-face {
+      font-family: 'FuturaCustom';
+      src: url('FuturaCyrillicMedium.ttf') format('truetype');
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -13,13 +19,14 @@
     }
 
     body {
-      background-color: #000000; /* full black */
-      color: #ffffff;
-      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      font-family: 'FuturaCustom', Arial, sans-serif;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
     }
 
     .container {
@@ -27,16 +34,34 @@
       animation: popIn 1s ease-out;
     }
 
-    .container img {
+    .container img.main-img {
       width: 400px;
       max-width: 90%;
       height: auto;
       margin-bottom: 20px;
     }
 
-    .container h1 {
+    h1 {
       font-size: 2rem;
       letter-spacing: 1px;
+    }
+
+    /* Instagram icon */
+    .instagram {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .instagram img {
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .instagram img:hover {
+      transform: scale(1.1);
     }
 
     @keyframes popIn {
@@ -53,9 +78,17 @@
 </head>
 
 <body>
+
+  <!-- Instagram icon -->
+  <a href="https://www.instagram.com/maratha.imperium/" target="_blank" class="instagram">
+    <img src="instagram.webp" alt="Instagram">
+  </a>
+
+  <!-- Main content -->
   <div class="container">
-    <img src="rajputanaimg.png" alt="Image">
+    <img src="rajputanaimg.png" class="main-img" alt="Main Image">
     <h1>Debunking the Biggest Fraud in History</h1>
   </div>
+
 </body>
 </html>
