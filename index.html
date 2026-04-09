@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Debunking the Biggest Fraud in History</title>
+
   <style>
     * {
       margin: 0;
@@ -12,9 +13,9 @@
     }
 
     body {
-      background-color: #0d1117; /* GitHub dark style */
+      background-color: #000000; /* full black */
       color: white;
-      font-family: Arial, sans-serif;
+      font-family: "Futura", "Trebuchet MS", Arial, sans-serif;
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -24,41 +25,39 @@
 
     .container {
       text-align: center;
-      animation: fadeIn 1.2s ease;
+      animation: popIn 1s ease-out;
     }
 
-    .container img {
-      max-width: 350px;
+    img {
+      max-width: 400px;
       width: 90%;
       height: auto;
-      display: block;
-      margin: 0 auto 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      margin-bottom: 20px;
     }
 
-    .container h1 {
+    h1 {
       font-size: 2rem;
-      font-weight: bold;
-      color: #f0f6fc;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
+      letter-spacing: 1px;
     }
 
-    @keyframes fadeIn {
-      from {
+    @keyframes popIn {
+      0% {
         opacity: 0;
-        transform: scale(0.9);
+        transform: scale(0.8);
       }
-      to {
+      100% {
         opacity: 1;
         transform: scale(1);
       }
     }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <img src="https://freeimage.host/i/wmremove-transformed-1.B06dw9R" alt="Centered Image" />
+    <!-- IMPORTANT: use your GitHub file name exactly -->
+    <img src="wmremove-transformed (1).png" alt="Image" />
     <h1>Debunking the Biggest Fraud in History</h1>
   </div>
 </body>
