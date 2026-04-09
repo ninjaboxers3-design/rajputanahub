@@ -23,160 +23,102 @@
       color: #fff;
       min-height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       padding: 24px;
     }
 
-    .wrapper {
+    .box {
       width: 100%;
-      max-width: 560px;
+      max-width: 540px;
       text-align: center;
     }
 
     h1 {
       font-size: 4rem;
-      letter-spacing: 2px;
-      margin-bottom: 34px;
+      margin-bottom: 36px;
       text-transform: uppercase;
-    }
-
-    .field {
-      width: 100%;
-      margin-bottom: 22px;
+      letter-spacing: 2px;
     }
 
     input {
       width: 100%;
-      height: 74px;
-      padding: 0 24px;
+      height: 72px;
+      margin-bottom: 22px;
+      padding: 0 22px;
       border: 1px solid #2e2e2e;
       border-radius: 16px;
-      background: #171717;
+      background: #1a1a1a;
       color: #fff;
-      font-size: 2rem;
-      text-transform: uppercase;
+      font-size: 1.2rem;
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     input::placeholder {
       color: #8a8a8a;
-      text-transform: none;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
     }
 
     input:focus {
-      border-color: #f5a623;
-      box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
-      background: #1b1b1b;
+      border-color: #f39c12;
+      box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15);
     }
 
-    .hint {
-      text-align: left;
-      margin-top: 8px;
-      color: #9a9a9a;
-      font-size: 0.9rem;
-      min-height: 18px;
-      text-transform: none;
-    }
-
-    .btn {
+    button {
       width: 100%;
-      height: 74px;
+      height: 72px;
       border: none;
       border-radius: 16px;
+      background: #555;
+      color: #aaa;
       font-size: 1.15rem;
-      font-weight: 700;
-      text-transform: none;
-      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-    }
-
-    .btn:disabled {
-      background: #575757;
-      color: #bdbdbd;
       cursor: not-allowed;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .btn.active {
-      background: #f5a623;
+    button.active {
+      background: #f39c12;
       color: #000;
       cursor: pointer;
     }
 
-    .btn.active:hover {
-      background: #ffb53b;
-      transform: translateY(-1px);
+    button.active:hover {
+      background: #ffab2e;
     }
 
-    .message {
-      margin-top: 18px;
+    #msg {
       min-height: 24px;
-      font-size: 0.98rem;
-      text-transform: none;
-    }
-
-    .message.error {
+      margin-top: 16px;
       color: #ff6b6b;
-    }
-
-    .message.success {
-      color: #6ee7a8;
+      font-size: 0.95rem;
     }
 
     .bottom-link {
       margin-top: 20px;
-      font-size: 0.98rem;
-      text-transform: none;
+      font-size: 1rem;
     }
 
     .bottom-link a {
-      color: #f5a623;
+      color: #f39c12;
       text-decoration: none;
     }
 
     .bottom-link a:hover {
       text-decoration: underline;
     }
-
-    @media (max-width: 640px) {
-      h1 {
-        font-size: 2.8rem;
-      }
-
-      input,
-      .btn {
-        height: 64px;
-      }
-
-      input {
-        font-size: 1.5rem;
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <h1>SIGN UP</h1>
+  <div class="box">
+    <h1>Sign Up</h1>
 
-    <div class="field">
-      <input type="text" id="username" placeholder="Username" maxlength="20" autocomplete="username" />
-      <div class="hint" id="usernameHint"></div>
-    </div>
+    <input type="text" id="username" placeholder="Username" maxlength="20" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
 
-    <div class="field">
-      <input type="email" id="email" placeholder="Email" autocomplete="email" />
-    </div>
+    <button id="signupBtn" disabled>Create Account</button>
 
-    <div class="field">
-      <input type="password" id="password" placeholder="Password" autocomplete="new-password" />
-      <div class="hint">Password must be at least 5 characters and include 1 number.</div>
-    </div>
-
-    <button id="signupBtn" class="btn" disabled>Create Account</button>
-
-    <div id="message" class="message"></div>
+    <div id="msg"></div>
 
     <div class="bottom-link">
       Already have an account? <a href="login.html">Login</a>
@@ -193,7 +135,8 @@
     import {
       getFirestore,
       doc,
-      runTransaction,
+      getDoc,
+      setDoc,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -210,162 +153,94 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const usernameInput = document.getElementById("username");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
+    const username = document.getElementById("username");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
     const signupBtn = document.getElementById("signupBtn");
-    const messageEl = document.getElementById("message");
-    const usernameHint = document.getElementById("usernameHint");
+    const msg = document.getElementById("msg");
 
-    function normalizeUsername(username) {
-      return username.trim().toLowerCase();
+    function validPassword(pw) {
+      return pw.length >= 5 && /\d/.test(pw);
     }
 
-    function isValidUsername(username) {
-      const raw = username.trim();
-      return /^[a-zA-Z0-9_]{3,20}$/.test(raw);
+    function validUsername(name) {
+      return /^[a-zA-Z0-9_]{3,20}$/.test(name.trim());
     }
 
-    function isValidEmail(email) {
-      return /\S+@\S+\.\S+/.test(email.trim());
+    function validEmail(mail) {
+      return /\S+@\S+\.\S+/.test(mail.trim());
     }
 
-    function isValidPassword(password) {
-      return password.length >= 5 && /\d/.test(password);
+    function updateButton() {
+      const ok =
+        validUsername(username.value) &&
+        validEmail(email.value) &&
+        validPassword(password.value);
+
+      signupBtn.disabled = !ok;
+      signupBtn.classList.toggle("active", ok);
     }
 
-    function setMessage(text, type = "error") {
-      messageEl.textContent = text;
-      messageEl.className = `message ${type}`;
-    }
-
-    function clearMessage() {
-      messageEl.textContent = "";
-      messageEl.className = "message";
-    }
-
-    function updateButtonState() {
-      const valid =
-        isValidUsername(usernameInput.value) &&
-        isValidEmail(emailInput.value) &&
-        isValidPassword(passwordInput.value);
-
-      signupBtn.disabled = !valid;
-      signupBtn.classList.toggle("active", valid);
-    }
-
-    usernameInput.addEventListener("input", () => {
-      const value = usernameInput.value.trim();
-
-      if (!value) {
-        usernameHint.textContent = "";
-      } else if (!isValidUsername(value)) {
-        usernameHint.textContent = "Use 3–20 letters, numbers, or underscores only.";
-      } else {
-        usernameHint.textContent = "";
-      }
-
-      clearMessage();
-      updateButtonState();
-    });
-
-    emailInput.addEventListener("input", () => {
-      clearMessage();
-      updateButtonState();
-    });
-
-    passwordInput.addEventListener("input", () => {
-      clearMessage();
-      updateButtonState();
-    });
+    username.addEventListener("input", updateButton);
+    email.addEventListener("input", updateButton);
+    password.addEventListener("input", updateButton);
 
     signupBtn.addEventListener("click", async () => {
-      clearMessage();
+      msg.textContent = "";
 
-      const username = usernameInput.value.trim();
-      const normalizedUsername = normalizeUsername(username);
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
+      const cleanUsername = username.value.trim();
+      const cleanEmail = email.value.trim();
+      const cleanPassword = password.value;
+      const normalizedUsername = cleanUsername.toLowerCase();
 
-      if (!isValidUsername(username)) {
-        setMessage("Username must be 3–20 letters, numbers, or underscores only.");
+      if (!validUsername(cleanUsername)) {
+        msg.textContent = "Username must be 3-20 letters, numbers, or underscores.";
         return;
       }
 
-      if (!isValidEmail(email)) {
-        setMessage("Enter a valid email address.");
+      if (!validPassword(cleanPassword)) {
+        msg.textContent = "Password must be at least 5 characters and include 1 number.";
         return;
       }
-
-      if (!isValidPassword(password)) {
-        setMessage("Password must be at least 5 characters and include 1 number.");
-        return;
-      }
-
-      signupBtn.disabled = true;
-      signupBtn.classList.remove("active");
-      signupBtn.textContent = "Creating Account...";
-
-      let userCredential = null;
 
       try {
-        userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
-        await updateProfile(userCredential.user, {
-          displayName: username
-        });
-
         const usernameRef = doc(db, "usernames", normalizedUsername);
-        const profileRef = doc(db, "profiles", userCredential.user.uid);
+        const usernameSnap = await getDoc(usernameRef);
 
-        await runTransaction(db, async (transaction) => {
-          const usernameSnap = await transaction.get(usernameRef);
-
-          if (usernameSnap.exists()) {
-            throw new Error("USERNAME_TAKEN");
-          }
-
-          transaction.set(usernameRef, {
-            uid: userCredential.user.uid,
-            username: username,
-            normalizedUsername: normalizedUsername,
-            createdAt: serverTimestamp()
-          });
-
-          transaction.set(profileRef, {
-            uid: userCredential.user.uid,
-            username: username,
-            normalizedUsername: normalizedUsername,
-            email: email,
-            createdAt: serverTimestamp()
-          });
-        });
-
-        setMessage("Account created successfully.", "success");
-        window.location.href = "login.html";
-      } catch (error) {
-        if (error.message === "USERNAME_TAKEN") {
-          setMessage("Username already picked.");
-          usernameHint.textContent = "That username is taken.";
-        } else if (error.code === "auth/email-already-in-use") {
-          setMessage("That email is already in use.");
-        } else if (error.code === "auth/invalid-email") {
-          setMessage("Enter a valid email address.");
-        } else if (error.code === "auth/weak-password") {
-          setMessage("Password is too weak.");
-        } else {
-          setMessage(error.message || "Something went wrong.");
+        if (usernameSnap.exists()) {
+          msg.textContent = "Username already picked.";
+          return;
         }
 
-        // Optional cleanup if auth user was created but username reservation failed.
-        // Leaving this as-is keeps the script simple for now.
-      } finally {
-        signupBtn.textContent = "Create Account";
-        updateButtonState();
+        const userCredential = await createUserWithEmailAndPassword(auth, cleanEmail, cleanPassword);
+
+        await updateProfile(userCredential.user, {
+          displayName: cleanUsername
+        });
+
+        await setDoc(usernameRef, {
+          uid: userCredential.user.uid,
+          username: cleanUsername,
+          createdAt: serverTimestamp()
+        });
+
+        await setDoc(doc(db, "profiles", userCredential.user.uid), {
+          username: cleanUsername,
+          email: cleanEmail,
+          createdAt: serverTimestamp()
+        });
+
+        window.location.href = "login.html";
+      } catch (error) {
+        if (error.code === "auth/email-already-in-use") {
+          msg.textContent = "Email is already in use.";
+        } else if (error.code === "auth/invalid-email") {
+          msg.textContent = "Invalid email.";
+        } else {
+          msg.textContent = error.message;
+        }
       }
     });
-
-    updateButtonState();
   </script>
 </body>
 </html>
