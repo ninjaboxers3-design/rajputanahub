@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
 
   <style>
@@ -14,71 +15,67 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'FuturaBook', Arial, sans-serif;
     }
 
     body {
       background: #000;
       color: #fff;
-      font-family: 'FuturaBook', Arial, sans-serif;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 24px;
     }
 
     .box {
-      width: 420px;
-      max-width: 90%;
+      width: 100%;
+      max-width: 540px;
       text-align: center;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
+      font-size: 4rem;
+      margin-bottom: 36px;
+      text-transform: uppercase;
       letter-spacing: 2px;
     }
 
     input {
       width: 100%;
-      padding: 16px;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-      border: 1px solid #333;
-      border-radius: 10px;
+      height: 72px;
+      margin-bottom: 22px;
+      padding: 0 22px;
+      border: 1px solid #2e2e2e;
+      border-radius: 16px;
       background: #1a1a1a;
       color: #fff;
-      font-family: 'FuturaBook', Arial, sans-serif;
+      font-size: 1.2rem;
       outline: none;
-      transition: 0.2s;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     input::placeholder {
-      color: #aaa;
+      color: #8a8a8a;
     }
 
     input:focus {
       border-color: #f39c12;
+      box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15);
     }
 
     button {
       width: 100%;
-      padding: 16px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border-radius: 10px;
+      height: 72px;
       border: none;
-      font-family: 'FuturaBook', Arial, sans-serif;
-      transition: 0.2s;
-    }
-
-    /* disabled */
-    button:disabled {
-      background: #444;
-      color: #888;
+      border-radius: 16px;
+      background: #555;
+      color: #aaa;
+      font-size: 1.15rem;
       cursor: not-allowed;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    /* active */
     button.active {
       background: #f39c12;
       color: #000;
@@ -86,95 +83,90 @@
     }
 
     button.active:hover {
-      background: #ffae2b;
-    }
-
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      color: #f39c12;
-      text-decoration: none;
-      font-size: 0.95rem;
-    }
-
-    a:hover {
-      text-decoration: underline;
+      background: #ffab2e;
     }
 
     #msg {
-      margin-top: 15px;
-      font-size: 0.9rem;
-      color: #ff4d4d;
-      min-height: 20px;
+      min-height: 24px;
+      margin-top: 16px;
+      color: #ff6b6b;
+      font-size: 0.95rem;
+    }
+
+    .bottom-link {
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+
+    .bottom-link a {
+      color: #f39c12;
+      text-decoration: none;
+    }
+
+    .bottom-link a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
-
 <body>
+  <div class="box">
+    <h1>Login</h1>
 
-<div class="box">
-  <h1>LOGIN</h1>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
 
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
+    <button id="loginBtn" disabled>Login</button>
 
-  <button id="loginBtn" disabled>Login</button>
+    <div id="msg"></div>
 
-  <a href="signup.html">Create account</a>
+    <div class="bottom-link">
+      Need an account? <a href="signup.html">Sign Up</a>
+    </div>
+  </div>
 
-  <div id="msg"></div>
-</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    const firebaseConfig = {
+      apiKey: "PASTE_YOURS",
+      authDomain: "PASTE_YOURS",
+      projectId: "PASTE_YOURS",
+      storageBucket: "PASTE_YOURS",
+      messagingSenderId: "PASTE_YOURS",
+      appId: "PASTE_YOURS"
+    };
 
-/* 🔥 PASTE YOUR CONFIG HERE */
-const firebaseConfig = {
-  apiKey: "PASTE_YOURS",
-  authDomain: "PASTE_YOURS",
-  projectId: "PASTE_YOURS",
-  storageBucket: "PASTE_YOURS",
-  messagingSenderId: "PASTE_YOURS",
-  appId: "PASTE_YOURS"
-};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const loginBtn = document.getElementById("loginBtn");
+    const msg = document.getElementById("msg");
 
-/* elements */
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const btn = document.getElementById("loginBtn");
-const msg = document.getElementById("msg");
+    function updateButton() {
+      const ok = email.value.trim() && password.value.trim();
+      loginBtn.disabled = !ok;
+      loginBtn.classList.toggle("active", !!ok);
+    }
 
-/* enable button */
-function checkInputs() {
-  if (email.value && password.value) {
-    btn.disabled = false;
-    btn.classList.add("active");
-  } else {
-    btn.disabled = true;
-    btn.classList.remove("active");
-  }
-}
+    email.addEventListener("input", updateButton);
+    password.addEventListener("input", updateButton);
 
-email.addEventListener("input", checkInputs);
-password.addEventListener("input", checkInputs);
+    loginBtn.addEventListener("click", async () => {
+      msg.textContent = "";
 
-/* login */
-btn.addEventListener("click", async () => {
-  msg.textContent = "";
-
-  try {
-    await signInWithEmailAndPassword(auth, email.value, password.value);
-    window.location.href = "index.html"; // redirect after login
-  } catch (error) {
-    msg.textContent = error.message;
-  }
-});
-</script>
-
+      try {
+        await signInWithEmailAndPassword(auth, email.value.trim(), password.value);
+        window.location.href = "index.html";
+      } catch (error) {
+        msg.textContent = "Invalid email or password.";
+      }
+    });
+  </script>
 </body>
 </html>
