@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Debunking the Biggest Fraud in History</title>
+  <title>RajputanaHub</title>
 
   <style>
-    /* Use BOOK font */
+    /* 🔥 Use BOOK font */
     @font-face {
       font-family: 'FuturaBook';
       src: url('FuturaCyrillicBook.ttf') format('truetype');
@@ -31,25 +31,33 @@
 
     .container {
       text-align: center;
-      animation: popIn 1s ease-out;
+      animation: fadeIn 1s ease-out;
     }
 
-    /* 🔥 Bigger image */
-    .main-img {
-      width: 600px; /* increased */
-      max-width: 95%;
-      height: auto;
-      margin-bottom: 30px;
+    /* 🔥 BIG TITLE */
+    .title {
+      font-size: 4.5rem;  /* increased a lot */
+      font-weight: bold;
+      margin-bottom: 20px;
     }
 
-    /* 🔥 ALL CAPS */
-    h1 {
-      font-size: 2.2rem;
+    /* Orange Hub box */
+    .hub {
+      background: #f39c12;
+      color: #000;
+      padding: 5px 15px;
+      border-radius: 10px;
+      margin-left: 10px;
+    }
+
+    /* Subtitle */
+    .subtitle {
+      font-size: 1.8rem;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
-    /* Instagram icon */
+    /* Instagram */
     .instagram {
       position: absolute;
       top: 20px;
@@ -58,24 +66,17 @@
 
     .instagram img {
       width: 35px;
-      height: 35px;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s;
     }
 
     .instagram img:hover {
       transform: scale(1.1);
     }
 
-    @keyframes popIn {
-      from {
-        opacity: 0;
-        transform: scale(0.85);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
@@ -84,13 +85,18 @@
 
   <!-- Instagram -->
   <a href="https://www.instagram.com/maratha.imperium/" target="_blank" class="instagram">
-    <img src="instagram.webp" alt="Instagram">
+    <img src="instagram.webp">
   </a>
 
   <!-- Content -->
   <div class="container">
-    <img src="rajputanaimg.png" class="main-img" alt="Main Image">
-    <h1>DEBUNKING THE BIGGEST FRAUD IN HISTORY</h1>
+    <div class="title">
+      Rajputana<span class="hub">Hub</span>
+    </div>
+
+    <div class="subtitle">
+      DEBUNKING THE BIGGEST FRAUD IN HISTORY
+    </div>
   </div>
 
 </body>
