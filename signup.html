@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+
+  <style>
+    @font-face {
+      font-family: 'FuturaBook';
+      src: url('FuturaCyrillicBook.ttf') format('truetype');
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'FuturaBook', Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box {
+      width: 420px;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      border: 1px solid #333;
+      border-radius: 10px;
+      background: #1a1a1a;
+      color: #fff;
+      font-family: 'FuturaBook', Arial, sans-serif;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    input:focus {
+      border-color: #f39c12;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 10px;
+      border: none;
+      font-family: 'FuturaBook', Arial, sans-serif;
+      transition: 0.2s;
+    }
+
+    /* disabled */
+    button:disabled {
+      background: #444;
+      color: #888;
+      cursor: not-allowed;
+    }
+
+    /* active */
+    button.active {
+      background: #f39c12;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button.active:hover {
+      background: #ffae2b;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #f39c12;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    #msg {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #ff4d4d;
+      min-height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>SIGN UP</h1>
+
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+
+  <button id="signupBtn" disabled>Create Account</button>
+
+  <a href="login.html">Already have account?</a>
+
+  <div id="msg"></div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* 🔥 PASTE YOUR FIREBASE CONFIG HERE */
+const firebaseConfig = {
+  apiKey: "PASTE_YOURS",
+  authDomain: "PASTE_YOURS",
+  projectId: "PASTE_YOURS",
+  storageBucket: "PASTE_YOURS",
+  messagingSenderId: "PASTE_YOURS",
+  appId: "PASTE_YOURS"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+/* elements */
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const btn = document.getElementById("signupBtn");
+const msg = document.getElementById("msg");
+
+/* password rule */
+function isValidPassword(pw) {
+  return pw.length >= 5 && /\d/.test(pw);
+}
+
+/* input check */
+function checkInputs() {
+  if (email.value && isValidPassword(password.value)) {
+    btn.disabled = false;
+    btn.classList.add("active");
+  } else {
+    btn.disabled = true;
+    btn.classList.remove("active");
+  }
+}
+
+email.addEventListener("input", checkInputs);
+password.addEventListener("input", checkInputs);
+
+/* signup */
+btn.addEventListener("click", async () => {
+  msg.textContent = "";
+
+  if (!isValidPassword(password.value)) {
+    msg.textContent = "Password must be at least 5 characters and include a number.";
+    return;
+  }
+
+  try {
+    await createUserWithEmailAndPassword(auth, email.value, password.value);
+    window.location.href = "login.html";
+  } catch (error) {
+    msg.textContent = error.message;
+  }
+});
+</script>
+
+</body>
+</html>
