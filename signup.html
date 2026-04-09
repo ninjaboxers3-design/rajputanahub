@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up</title>
 
   <style>
@@ -14,178 +15,357 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'FuturaBook', Arial, sans-serif;
     }
 
     body {
       background: #000;
       color: #fff;
-      font-family: 'FuturaBook', Arial, sans-serif;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
 
-    .box {
-      width: 420px;
-      max-width: 90%;
+    .wrapper {
+      width: 100%;
+      max-width: 560px;
       text-align: center;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
+      font-size: 4rem;
       letter-spacing: 2px;
+      margin-bottom: 34px;
+      text-transform: uppercase;
+    }
+
+    .field {
+      width: 100%;
+      margin-bottom: 22px;
     }
 
     input {
       width: 100%;
-      padding: 16px;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-      border: 1px solid #333;
-      border-radius: 10px;
-      background: #1a1a1a;
+      height: 74px;
+      padding: 0 24px;
+      border: 1px solid #2e2e2e;
+      border-radius: 16px;
+      background: #171717;
       color: #fff;
-      font-family: 'FuturaBook', Arial, sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
       outline: none;
-      transition: 0.2s;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
     input::placeholder {
-      color: #aaa;
+      color: #8a8a8a;
+      text-transform: none;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
     }
 
     input:focus {
-      border-color: #f39c12;
+      border-color: #f5a623;
+      box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+      background: #1b1b1b;
     }
 
-    button {
+    .hint {
+      text-align: left;
+      margin-top: 8px;
+      color: #9a9a9a;
+      font-size: 0.9rem;
+      min-height: 18px;
+      text-transform: none;
+    }
+
+    .btn {
       width: 100%;
-      padding: 16px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border-radius: 10px;
+      height: 74px;
       border: none;
-      font-family: 'FuturaBook', Arial, sans-serif;
-      transition: 0.2s;
+      border-radius: 16px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: none;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
 
-    /* disabled */
-    button:disabled {
-      background: #444;
-      color: #888;
+    .btn:disabled {
+      background: #575757;
+      color: #bdbdbd;
       cursor: not-allowed;
     }
 
-    /* active */
-    button.active {
-      background: #f39c12;
+    .btn.active {
+      background: #f5a623;
       color: #000;
       cursor: pointer;
     }
 
-    button.active:hover {
-      background: #ffae2b;
+    .btn.active:hover {
+      background: #ffb53b;
+      transform: translateY(-1px);
     }
 
-    a {
-      display: inline-block;
+    .message {
+      margin-top: 18px;
+      min-height: 24px;
+      font-size: 0.98rem;
+      text-transform: none;
+    }
+
+    .message.error {
+      color: #ff6b6b;
+    }
+
+    .message.success {
+      color: #6ee7a8;
+    }
+
+    .bottom-link {
       margin-top: 20px;
-      color: #f39c12;
-      text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.98rem;
+      text-transform: none;
     }
 
-    a:hover {
+    .bottom-link a {
+      color: #f5a623;
+      text-decoration: none;
+    }
+
+    .bottom-link a:hover {
       text-decoration: underline;
     }
 
-    #msg {
-      margin-top: 15px;
-      font-size: 0.9rem;
-      color: #ff4d4d;
-      min-height: 20px;
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 2.8rem;
+      }
+
+      input,
+      .btn {
+        height: 64px;
+      }
+
+      input {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
-
 <body>
+  <div class="wrapper">
+    <h1>SIGN UP</h1>
 
-<div class="box">
-  <h1>SIGN UP</h1>
+    <div class="field">
+      <input type="text" id="username" placeholder="Username" maxlength="20" autocomplete="username" />
+      <div class="hint" id="usernameHint"></div>
+    </div>
 
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
+    <div class="field">
+      <input type="email" id="email" placeholder="Email" autocomplete="email" />
+    </div>
 
-  <button id="signupBtn" disabled>Create Account</button>
+    <div class="field">
+      <input type="password" id="password" placeholder="Password" autocomplete="new-password" />
+      <div class="hint">Password must be at least 5 characters and include 1 number.</div>
+    </div>
 
-  <a href="login.html">Already have account?</a>
+    <button id="signupBtn" class="btn" disabled>Create Account</button>
 
-  <div id="msg"></div>
-</div>
+    <div id="message" class="message"></div>
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    <div class="bottom-link">
+      Already have an account? <a href="login.html">Login</a>
+    </div>
+  </div>
 
-/* 🔥 PASTE YOUR FIREBASE CONFIG HERE */
-const firebaseConfig = {
-  apiKey: "AIzaSyDbyi09YOYaY4FU2MMt4IUxx-2V6VHaOM0",
-  authDomain: "rajputanahub-1caee.firebaseapp.com",
-  projectId: "rajputanahub-1caee",
-  storageBucket: "rajputanahub-1caee.firebasestorage.app",
-  messagingSenderId: "389272865248",
-  appId: "1:389272865248:web:1417c6d0b317983ecb0385",
-  measurementId: "G-BQFG62XFSX"
-};
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      runTransaction,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+    const firebaseConfig = {
+      apiKey: "PASTE_YOURS",
+      authDomain: "PASTE_YOURS",
+      projectId: "PASTE_YOURS",
+      storageBucket: "PASTE_YOURS",
+      messagingSenderId: "PASTE_YOURS",
+      appId: "PASTE_YOURS"
+    };
 
-/* elements */
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const btn = document.getElementById("signupBtn");
-const msg = document.getElementById("msg");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-/* password rule */
-function isValidPassword(pw) {
-  return pw.length >= 5 && /\d/.test(pw);
-}
+    const usernameInput = document.getElementById("username");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const signupBtn = document.getElementById("signupBtn");
+    const messageEl = document.getElementById("message");
+    const usernameHint = document.getElementById("usernameHint");
 
-/* input check */
-function checkInputs() {
-  if (email.value && isValidPassword(password.value)) {
-    btn.disabled = false;
-    btn.classList.add("active");
-  } else {
-    btn.disabled = true;
-    btn.classList.remove("active");
-  }
-}
+    function normalizeUsername(username) {
+      return username.trim().toLowerCase();
+    }
 
-email.addEventListener("input", checkInputs);
-password.addEventListener("input", checkInputs);
+    function isValidUsername(username) {
+      const raw = username.trim();
+      return /^[a-zA-Z0-9_]{3,20}$/.test(raw);
+    }
 
-/* signup */
-btn.addEventListener("click", async () => {
-  msg.textContent = "";
+    function isValidEmail(email) {
+      return /\S+@\S+\.\S+/.test(email.trim());
+    }
 
-  if (!isValidPassword(password.value)) {
-    msg.textContent = "Password must be at least 5 characters and include a number.";
-    return;
-  }
+    function isValidPassword(password) {
+      return password.length >= 5 && /\d/.test(password);
+    }
 
-  try {
-    await createUserWithEmailAndPassword(auth, email.value, password.value);
-    window.location.href = "login.html";
-  } catch (error) {
-    msg.textContent = error.message;
-  }
-});
-</script>
+    function setMessage(text, type = "error") {
+      messageEl.textContent = text;
+      messageEl.className = `message ${type}`;
+    }
 
+    function clearMessage() {
+      messageEl.textContent = "";
+      messageEl.className = "message";
+    }
+
+    function updateButtonState() {
+      const valid =
+        isValidUsername(usernameInput.value) &&
+        isValidEmail(emailInput.value) &&
+        isValidPassword(passwordInput.value);
+
+      signupBtn.disabled = !valid;
+      signupBtn.classList.toggle("active", valid);
+    }
+
+    usernameInput.addEventListener("input", () => {
+      const value = usernameInput.value.trim();
+
+      if (!value) {
+        usernameHint.textContent = "";
+      } else if (!isValidUsername(value)) {
+        usernameHint.textContent = "Use 3–20 letters, numbers, or underscores only.";
+      } else {
+        usernameHint.textContent = "";
+      }
+
+      clearMessage();
+      updateButtonState();
+    });
+
+    emailInput.addEventListener("input", () => {
+      clearMessage();
+      updateButtonState();
+    });
+
+    passwordInput.addEventListener("input", () => {
+      clearMessage();
+      updateButtonState();
+    });
+
+    signupBtn.addEventListener("click", async () => {
+      clearMessage();
+
+      const username = usernameInput.value.trim();
+      const normalizedUsername = normalizeUsername(username);
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!isValidUsername(username)) {
+        setMessage("Username must be 3–20 letters, numbers, or underscores only.");
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        setMessage("Enter a valid email address.");
+        return;
+      }
+
+      if (!isValidPassword(password)) {
+        setMessage("Password must be at least 5 characters and include 1 number.");
+        return;
+      }
+
+      signupBtn.disabled = true;
+      signupBtn.classList.remove("active");
+      signupBtn.textContent = "Creating Account...";
+
+      let userCredential = null;
+
+      try {
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+        await updateProfile(userCredential.user, {
+          displayName: username
+        });
+
+        const usernameRef = doc(db, "usernames", normalizedUsername);
+        const profileRef = doc(db, "profiles", userCredential.user.uid);
+
+        await runTransaction(db, async (transaction) => {
+          const usernameSnap = await transaction.get(usernameRef);
+
+          if (usernameSnap.exists()) {
+            throw new Error("USERNAME_TAKEN");
+          }
+
+          transaction.set(usernameRef, {
+            uid: userCredential.user.uid,
+            username: username,
+            normalizedUsername: normalizedUsername,
+            createdAt: serverTimestamp()
+          });
+
+          transaction.set(profileRef, {
+            uid: userCredential.user.uid,
+            username: username,
+            normalizedUsername: normalizedUsername,
+            email: email,
+            createdAt: serverTimestamp()
+          });
+        });
+
+        setMessage("Account created successfully.", "success");
+        window.location.href = "login.html";
+      } catch (error) {
+        if (error.message === "USERNAME_TAKEN") {
+          setMessage("Username already picked.");
+          usernameHint.textContent = "That username is taken.";
+        } else if (error.code === "auth/email-already-in-use") {
+          setMessage("That email is already in use.");
+        } else if (error.code === "auth/invalid-email") {
+          setMessage("Enter a valid email address.");
+        } else if (error.code === "auth/weak-password") {
+          setMessage("Password is too weak.");
+        } else {
+          setMessage(error.message || "Something went wrong.");
+        }
+
+        // Optional cleanup if auth user was created but username reservation failed.
+        // Leaving this as-is keeps the script simple for now.
+      } finally {
+        signupBtn.textContent = "Create Account";
+        updateButtonState();
+      }
+    });
+
+    updateButtonState();
+  </script>
 </body>
 </html>
