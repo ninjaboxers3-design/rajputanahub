@@ -1,246 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Sign Up</title>
 
+  <!-- 🔥 Futura Font -->
   <style>
     @font-face {
       font-family: 'FuturaBook';
       src: url('FuturaCyrillicBook.ttf') format('truetype');
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'FuturaBook', Arial, sans-serif;
-    }
-
     body {
+      margin: 0;
       background: #000;
-      color: #fff;
-      min-height: 100vh;
+      font-family: 'FuturaBook', Arial;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 24px;
+      height: 100vh;
+      color: white;
     }
 
     .box {
-      width: 100%;
-      max-width: 540px;
+      width: 400px;
       text-align: center;
     }
 
     h1 {
-      font-size: 4rem;
-      margin-bottom: 36px;
-      text-transform: uppercase;
+      margin-bottom: 30px;
       letter-spacing: 2px;
     }
 
     input {
       width: 100%;
-      height: 72px;
-      margin-bottom: 22px;
-      padding: 0 22px;
-      border: 1px solid #2e2e2e;
-      border-radius: 16px;
-      background: #1a1a1a;
-      color: #fff;
-      font-size: 1.2rem;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    input::placeholder {
-      color: #8a8a8a;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      background: #1c1c1c;
+      color: white;
+      font-size: 16px;
     }
 
     input:focus {
-      border-color: #f39c12;
-      box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15);
+      outline: none;
+      background: #2a2a2a;
     }
 
     button {
       width: 100%;
-      height: 72px;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
       border: none;
-      border-radius: 16px;
-      background: #555;
-      color: #aaa;
-      font-size: 1.15rem;
+      font-size: 16px;
+      background: gray;
+      color: white;
       cursor: not-allowed;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: 0.2s;
     }
 
     button.active {
-      background: #f39c12;
-      color: #000;
+      background: orange;
       cursor: pointer;
     }
 
-    button.active:hover {
-      background: #ffab2e;
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 5px;
     }
 
-    #msg {
-      min-height: 24px;
-      margin-top: 16px;
-      color: #ff6b6b;
-      font-size: 0.95rem;
-    }
-
-    .bottom-link {
-      margin-top: 20px;
-      font-size: 1rem;
-    }
-
-    .bottom-link a {
-      color: #f39c12;
+    a {
+      display: block;
+      margin-top: 15px;
+      color: orange;
       text-decoration: none;
-    }
-
-    .bottom-link a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
+
 <body>
-  <div class="box">
-    <h1>Sign Up</h1>
 
-    <input type="text" id="username" placeholder="Username" maxlength="20" />
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
+<div class="box">
+  <h1>SIGN UP</h1>
 
-    <button id="signupBtn" disabled>Create Account</button>
+  <input type="text" id="username" placeholder="Username">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
 
-    <div id="msg"></div>
+  <div class="error" id="error"></div>
 
-    <div class="bottom-link">
-      Already have an account? <a href="login.html">Login</a>
-    </div>
-  </div>
+  <button id="signupBtn">Create Account</button>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      updateProfile
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      setDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <a href="login.html">Already have an account? Login</a>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "PASTE_YOURS",
-      authDomain: "PASTE_YOURS",
-      projectId: "PASTE_YOURS",
-      storageBucket: "PASTE_YOURS",
-      messagingSenderId: "PASTE_YOURS",
-      appId: "PASTE_YOURS"
-    };
+<!-- 🔥 FIREBASE SCRIPT -->
+<script type="module">
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  updateProfile 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    const username = document.getElementById("username");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const signupBtn = document.getElementById("signupBtn");
-    const msg = document.getElementById("msg");
+// 🔴 PUT YOUR CONFIG HERE
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+};
 
-    function validPassword(pw) {
-      return pw.length >= 5 && /\d/.test(pw);
-    }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-    function validUsername(name) {
-      return /^[a-zA-Z0-9_]{3,20}$/.test(name.trim());
-    }
+// Inputs
+const username = document.getElementById("username");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const btn = document.getElementById("signupBtn");
+const errorBox = document.getElementById("error");
 
-    function validEmail(mail) {
-      return /\S+@\S+\.\S+/.test(mail.trim());
-    }
+// 🔥 Enable button only when valid
+function validate() {
+  const pass = password.value;
 
-    function updateButton() {
-      const ok =
-        validUsername(username.value) &&
-        validEmail(email.value) &&
-        validPassword(password.value);
+  const validPass =
+    pass.length >= 6 && /\d/.test(pass); // 6 chars + 1 number
 
-      signupBtn.disabled = !ok;
-      signupBtn.classList.toggle("active", ok);
-    }
+  if (username.value && email.value && validPass) {
+    btn.classList.add("active");
+    btn.disabled = false;
+  } else {
+    btn.classList.remove("active");
+    btn.disabled = true;
+  }
+}
 
-    username.addEventListener("input", updateButton);
-    email.addEventListener("input", updateButton);
-    password.addEventListener("input", updateButton);
+username.oninput = validate;
+email.oninput = validate;
+password.oninput = validate;
 
-    signupBtn.addEventListener("click", async () => {
-      msg.textContent = "";
+// 🔥 SIGNUP
+btn.addEventListener("click", async () => {
 
-      const cleanUsername = username.value.trim();
-      const cleanEmail = email.value.trim();
-      const cleanPassword = password.value;
-      const normalizedUsername = cleanUsername.toLowerCase();
+  try {
+    const userCred = await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
 
-      if (!validUsername(cleanUsername)) {
-        msg.textContent = "Username must be 3-20 letters, numbers, or underscores.";
-        return;
-      }
-
-      if (!validPassword(cleanPassword)) {
-        msg.textContent = "Password must be at least 5 characters and include 1 number.";
-        return;
-      }
-
-      try {
-        const usernameRef = doc(db, "usernames", normalizedUsername);
-        const usernameSnap = await getDoc(usernameRef);
-
-        if (usernameSnap.exists()) {
-          msg.textContent = "Username already picked.";
-          return;
-        }
-
-        const userCredential = await createUserWithEmailAndPassword(auth, cleanEmail, cleanPassword);
-
-        await updateProfile(userCredential.user, {
-          displayName: cleanUsername
-        });
-
-        await setDoc(usernameRef, {
-          uid: userCredential.user.uid,
-          username: cleanUsername,
-          createdAt: serverTimestamp()
-        });
-
-        await setDoc(doc(db, "profiles", userCredential.user.uid), {
-          username: cleanUsername,
-          email: cleanEmail,
-          createdAt: serverTimestamp()
-        });
-
-        window.location.href = "login.html";
-      } catch (error) {
-        if (error.code === "auth/email-already-in-use") {
-          msg.textContent = "Email is already in use.";
-        } else if (error.code === "auth/invalid-email") {
-          msg.textContent = "Invalid email.";
-        } else {
-          msg.textContent = error.message;
-        }
-      }
+    // Save username
+    await updateProfile(userCred.user, {
+      displayName: username.value
     });
-  </script>
+
+    // Save locally for later use
+    localStorage.setItem("username", username.value);
+
+    // ✅ REDIRECT TO DATABASE
+    window.location.href = "database.html";
+
+  } catch (err) {
+    errorBox.innerText = err.message;
+  }
+
+});
+
+</script>
+
 </body>
 </html>
