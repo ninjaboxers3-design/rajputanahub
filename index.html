@@ -1,203 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RajputanaHub</title>
 
   <style>
     @font-face {
       font-family: 'FuturaBook';
-      src: url('FuturaCyrillicBook.ttf') format('truetype');
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'FuturaBook', Arial, sans-serif;
+      src: url('FuturaCyrillicBook.ttf');
     }
 
     body {
-      background: #000;
-      color: #fff;
-      height: 100vh;
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: 'FuturaBook';
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
-      overflow: hidden;
+      height: 100vh;
+      opacity: 0;
+      transition: 0.4s;
+    }
+
+    body.show {
+      opacity: 1;
     }
 
     .top-left {
       position: absolute;
-      top: 25px;
-      left: 30px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .auth-links {
-      display: flex;
-      gap: 25px;
-    }
-
-    .auth-links a,
-    .profile-link,
-    .logout-btn {
-      color: #666;
-      text-decoration: none;
-      font-size: 1.1rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: 0.25s ease;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .auth-links a:hover,
-    .profile-link:hover,
-    .logout-btn:hover {
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255,255,255,0.4);
-      transform: translateY(-1px);
-    }
-
-    .user-area {
-      display: none;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .avatar-small {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid #333;
-      background: #1a1a1a;
-    }
-
-    .instagram {
-      position: absolute;
       top: 20px;
-      right: 20px;
+      left: 20px;
+      font-size: 18px;
     }
 
-    .instagram img {
-      width: 35px;
-      cursor: pointer;
-      transition: 0.25s;
+    .top-left a {
+      margin-right: 20px;
+      color: gray;
+      text-decoration: none;
+      transition: 0.2s;
     }
 
-    .instagram img:hover {
-      transform: scale(1.1);
-    }
-
-    .container {
-      text-align: center;
-      animation: fadeIn 1s ease-out;
-    }
-
-    .logo {
-      width: 700px;
-      max-width: 95%;
-      height: auto;
-      margin-bottom: 30px;
-    }
-
-    .subtitle {
-      font-size: 1.8rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #ddd;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+    .top-left a:hover {
+      color: orange;
     }
   </style>
 </head>
+
 <body>
 
-  <div class="top-left">
-    <div class="auth-links" id="authLinks">
-      <a href="signup.html">Sign Up</a>
-      <a href="login.html">Login</a>
-    </div>
+<div class="top-left">
+  <a href="signup.html" id="signup">SIGN UP</a>
+  <a href="login.html" id="login">LOGIN</a>
+</div>
 
-    <div class="user-area" id="userArea">
-      <img id="navAvatar" class="avatar-small" src="" alt="Profile Picture" />
-      <a href="profile.html" id="navUsername" class="profile-link">Profile</a>
-      <button id="logoutBtn" class="logout-btn">Logout</button>
-    </div>
-  </div>
+<script>
+window.onload = () => document.body.classList.add("show");
 
-  <a href="https://www.instagram.com/maratha.imperium/" target="_blank" class="instagram">
-    <img src="instagram.webp" alt="Instagram" />
-  </a>
+document.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", function(e) {
+    e.preventDefault();
+    document.body.style.opacity = "0";
+    setTimeout(() => {
+      window.location.href = this.href;
+    }, 300);
+  });
+});
+</script>
 
-  <div class="container">
-    <img src="rajputanaimg.png" class="logo" alt="RajputanaHub" />
-    <div class="subtitle">DEBUNKING THE HISTORY OF RAJPUTS</div>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-   const firebaseConfig = {
-  apiKey: "AIzaSyDbyi09YOYaY4FU2MMt4IUxx-2V6VHaOM0",
-  authDomain: "rajputanahub-1caee.firebaseapp.com",
-  projectId: "rajputanahub-1caee",
-  storageBucket: "rajputanahub-1caee.firebasestorage.app",
-  messagingSenderId: "389272865248",
-  appId: "1:389272865248:web:1417c6d0b317983ecb0385",
-  measurementId: "G-BQFG62XFSX"
-};
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const authLinks = document.getElementById("authLinks");
-    const userArea = document.getElementById("userArea");
-    const navUsername = document.getElementById("navUsername");
-    const navAvatar = document.getElementById("navAvatar");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    const defaultAvatar = "https://via.placeholder.com/100?text=%20";
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        authLinks.style.display = "none";
-        userArea.style.display = "flex";
-
-        const profileRef = doc(db, "profiles", user.uid);
-        const profileSnap = await getDoc(profileRef);
-
-        if (profileSnap.exists()) {
-          const data = profileSnap.data();
-          navUsername.textContent = data.username || user.displayName || "Profile";
-          navAvatar.src = data.photoURL || defaultAvatar;
-        } else {
-          navUsername.textContent = user.displayName || "Profile";
-          navAvatar.src = defaultAvatar;
-        }
-      } else {
-        authLinks.style.display = "flex";
-        userArea.style.display = "none";
-      }
-    });
-
-    logoutBtn.addEventListener("click", async () => {
-      await signOut(auth);
-      window.location.href = "index.html";
-    });
-  </script>
 </body>
 </html>
