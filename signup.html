@@ -1,36 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Sign Up</title>
 
-  <!-- 🔥 Futura Font -->
   <style>
     @font-face {
       font-family: 'FuturaBook';
-      src: url('FuturaCyrillicBook.ttf') format('truetype');
+      src: url('FuturaCyrillicBook.ttf');
     }
 
     body {
       margin: 0;
-      background: #000;
-      font-family: 'FuturaBook', Arial;
+      background: black;
+      color: white;
+      font-family: 'FuturaBook';
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      color: white;
+      opacity: 0;
+      transition: 0.4s;
     }
+
+    body.show { opacity: 1; }
 
     .box {
       width: 400px;
       text-align: center;
     }
 
-    h1 {
-      margin-bottom: 30px;
-      letter-spacing: 2px;
-    }
+    h1 { margin-bottom: 20px; }
 
     input {
       width: 100%;
@@ -40,25 +39,16 @@
       border: none;
       background: #1c1c1c;
       color: white;
-      font-size: 16px;
-    }
-
-    input:focus {
-      outline: none;
-      background: #2a2a2a;
     }
 
     button {
       width: 100%;
       padding: 15px;
-      margin-top: 15px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
       background: gray;
+      border: none;
+      border-radius: 10px;
       color: white;
-      cursor: not-allowed;
-      transition: 0.2s;
+      margin-top: 10px;
     }
 
     button.active {
@@ -66,18 +56,7 @@
       cursor: pointer;
     }
 
-    .error {
-      color: red;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    a {
-      display: block;
-      margin-top: 15px;
-      color: orange;
-      text-decoration: none;
-    }
+    .error { color: red; }
   </style>
 </head>
 
@@ -86,57 +65,43 @@
 <div class="box">
   <h1>SIGN UP</h1>
 
-  <input type="text" id="username" placeholder="Username">
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
+  <input id="username" placeholder="Username">
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
 
   <div class="error" id="error"></div>
 
-  <button id="signupBtn">Create Account</button>
-
-  <a href="login.html">Already have an account? Login</a>
+  <button id="btn">Create Account</button>
 </div>
 
-<!-- 🔥 FIREBASE SCRIPT -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  updateProfile 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 🔴 PUT YOUR CONFIG HERE
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
+  apiKey: "PUT_YOURS",
+  authDomain: "PUT_YOURS",
+  projectId: "PUT_YOURS"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Inputs
 const username = document.getElementById("username");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
-const btn = document.getElementById("signupBtn");
+const btn = document.getElementById("btn");
 const errorBox = document.getElementById("error");
 
-// 🔥 Enable button only when valid
+window.onload = () => document.body.classList.add("show");
+
 function validate() {
-  const pass = password.value;
-
-  const validPass =
-    pass.length >= 6 && /\d/.test(pass); // 6 chars + 1 number
-
-  if (username.value && email.value && validPass) {
+  if (username.value && email.value && password.value.length >= 6 && /\d/.test(password.value)) {
     btn.classList.add("active");
-    btn.disabled = false;
   } else {
     btn.classList.remove("active");
-    btn.disabled = true;
   }
 }
 
@@ -144,32 +109,26 @@ username.oninput = validate;
 email.oninput = validate;
 password.oninput = validate;
 
-// 🔥 SIGNUP
-btn.addEventListener("click", async () => {
-
+btn.onclick = async () => {
   try {
-    const userCred = await createUserWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
+    const user = await createUserWithEmailAndPassword(auth, email.value, password.value);
 
-    // Save username
-    await updateProfile(userCred.user, {
+    await updateProfile(user.user, {
       displayName: username.value
     });
 
-    // Save locally for later use
     localStorage.setItem("username", username.value);
 
-    // ✅ REDIRECT TO DATABASE
-    window.location.href = "database.html";
+    document.body.style.opacity = "0";
+
+    setTimeout(() => {
+      window.location.replace("database.html");
+    }, 300);
 
   } catch (err) {
     errorBox.innerText = err.message;
   }
-
-});
+};
 
 </script>
 
